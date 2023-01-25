@@ -1,4 +1,4 @@
-import 'package:circular_animation_splash_screen/circular_animation_splash_screen.dart';
+import 'package:circular_animation_splash/circular_animation_splash.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
