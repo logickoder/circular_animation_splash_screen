@@ -29,53 +29,31 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
   Widget build(BuildContext context) {
     return Material(
-      child: Stack(
-        children: <Widget>[
-          Scaffold(
-            appBar: AppBar(
-              title: const Text('Circular Animation Splash'),
-            ),
-            body: const ExampleStartScreen(),
+      child: CircularAnimationSplash(
+        color: Theme.of(context).accentColor,
+        logo: Text(
+          'logickoder',
+          style: Theme.of(context).textTheme.headline3?.copyWith(
+                color: Colors.yellow[900],
+              ),
+        ),
+        screen: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: ListView.separated(
+            itemBuilder: (_, index) => Text('$index'),
+            separatorBuilder: (_, __) => const Divider(),
+            itemCount: 100,
           ),
-          CircularAnimationSplash(
-            color: Theme.of(context).accentColor,
-            logo: Text(
-              'logickoder',
-              style: Theme.of(context).textTheme.headline3?.copyWith(
-                    color: Colors.blueAccent,
-                  ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class ExampleStartScreen extends StatelessWidget {
-  const ExampleStartScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: Container(
-        color: Colors.blueAccent,
-      ),
-      body: ListView.separated(
-        itemBuilder: (_, index) => Text('$index'),
-        separatorBuilder: (_, __) => const Divider(),
-        itemCount: 100,
+        ),
+        duration: const Duration(seconds: 6),
+        numberOfCircles: 3,
+        circleDifference: 100,
       ),
     );
   }
