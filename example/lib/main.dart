@@ -50,6 +50,12 @@ class _HomePageState extends State<HomePage> {
           ),
           CircularAnimationSplash(
             color: Theme.of(context).accentColor,
+            logo: Text(
+              'logickoder',
+              style: Theme.of(context).textTheme.headline3?.copyWith(
+                    color: Colors.blueAccent,
+                  ),
+            ),
           ),
         ],
       ),

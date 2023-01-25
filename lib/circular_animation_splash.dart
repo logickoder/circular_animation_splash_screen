@@ -19,12 +19,16 @@ class CircularAnimationSplash extends StatefulWidget {
   /// how many circles should be shown in the splash
   final int numberOfCircles;
 
+  /// the logo to show in the middle of the circular drop
+  final Widget? logo;
+
   const CircularAnimationSplash({
     super.key,
     required this.color,
     this.duration = const Duration(milliseconds: 3000),
     this.circleDifference = 100,
     this.numberOfCircles = 3,
+    this.logo,
   });
 
   @override
@@ -75,6 +79,10 @@ class _CircularAnimationSplashState extends State<CircularAnimationSplash>
               ),
             ),
           ),
+          if (widget.logo != null && _animation.logoVisible.value)
+            Center(
+              child: widget.logo!,
+            ),
           Positioned(
             top: _animation.dropPosition.value * size.height,
             left: size.width / 2 - _animation.dropSize.value / 2,
