@@ -2,58 +2,47 @@ import 'package:flutter/material.dart';
 
 class HolePainter extends CustomPainter {
   final Color color;
-  final double holeSize;
+  final double radius;
+  final double circleDifference;
+  final int numberOfCircles;
 
   const HolePainter({
     required this.color,
-    required this.holeSize,
+    required this.radius,
+    required this.circleDifference,
+    required this.numberOfCircles,
   });
 
   @override
   void paint(Canvas canvas, Size size) {
-    final radius = holeSize / 2;
+    final center = Offset(size.width / 2, size.height / 2);
 
-    final rect = Rect.fromLTWH(
-      0,
-      0,
-      size.width,
-      size.height,
-    );
+    var startingPath = Path()
+      ..addRect(
+        Rect.fromLTWH(0, 0, size.width, size.height),
+      );
 
-    final outerCircleRect = Rect.fromCircle(
-      center: Offset(size.width / 2, size.height / 2),
-      radius: radius,
-    );
+    for (var i = 0; i < numberOfCircles; ++i) {
+      final path = Path()
+        ..addOval(
+          Rect.fromCircle(
+            center: center,
+            radius: radius - (i * 100),
+          ),
+        )
+        ..close();
 
-    final innerCircleRect = Rect.fromCircle(
-      center: Offset(size.width / 2, size.height / 2),
-      radius: radius / 2,
-    );
+      canvas.drawPath(
+        Path.combine(
+          PathOperation.difference,
+          startingPath,
+          path,
+        ),
+        Paint()..color = color.withOpacity(1 / (i + 1)),
+      );
 
-    final transparentHole = Path.combine(
-      PathOperation.difference,
-      Path()..addRect(rect),
-      Path()
-        ..addOval(outerCircleRect)
-        ..close(),
-    );
-
-    final halfTransparentRing = Path.combine(
-      PathOperation.difference,
-      Path()
-        ..addOval(outerCircleRect)
-        ..close(),
-      Path()
-        ..addOval(innerCircleRect)
-        ..close(),
-    );
-
-    canvas.drawPath(transparentHole, Paint()..color = color);
-
-    canvas.drawPath(
-      halfTransparentRing,
-      Paint()..color = color.withOpacity(0.5),
-    );
+      startingPath = path;
+    }
   }
 
   @override

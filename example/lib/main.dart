@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
             body: const ExampleStartScreen(),
           ),
           CircularAnimationSplash(
-            color: Theme.of(context).colorScheme.secondary,
+            color: Theme.of(context).accentColor,
           ),
         ],
       ),
@@ -62,8 +62,15 @@ class ExampleStartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.redAccent,
+    return Scaffold(
+      drawer: Container(
+        color: Colors.blueAccent,
+      ),
+      body: ListView.separated(
+        itemBuilder: (_, index) => Text('$index'),
+        separatorBuilder: (_, __) => const Divider(),
+        itemCount: 100,
+      ),
     );
   }
 }

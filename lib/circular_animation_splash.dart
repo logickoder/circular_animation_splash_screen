@@ -7,9 +7,25 @@ import '../hole_painter.dart';
 import '../raindrop_painter.dart';
 
 class CircularAnimationSplash extends StatefulWidget {
+  /// the color of the circular animation
   final Color color;
 
-  const CircularAnimationSplash({super.key, required this.color});
+  /// how long should the splash last
+  final Duration duration;
+
+  /// the distance between each successive circle in the splash
+  final double circleDifference;
+
+  /// how many circles should be shown in the splash
+  final int numberOfCircles;
+
+  const CircularAnimationSplash({
+    super.key,
+    required this.color,
+    this.duration = const Duration(milliseconds: 3000),
+    this.circleDifference = 100,
+    this.numberOfCircles = 3,
+  });
 
   @override
   State<CircularAnimationSplash> createState() =>
@@ -26,7 +42,7 @@ class _CircularAnimationSplashState extends State<CircularAnimationSplash>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 3000),
+      duration: widget.duration,
       vsync: this,
     );
 
@@ -44,32 +60,36 @@ class _CircularAnimationSplashState extends State<CircularAnimationSplash>
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        SizedBox(
-          width: double.infinity,
-          height: double.infinity,
-          child: CustomPaint(
-            painter: HolePainter(
-              color: widget.color,
-              holeSize: _animation.holeSize.value * size.width,
-            ),
-          ),
-        ),
-        Positioned(
-          top: _animation.dropPosition.value * size.height,
-          left: size.width / 2 - _animation.dropSize.value / 2,
-          child: SizedBox(
-            width: _animation.dropSize.value,
-            height: _animation.dropSize.value,
+    return IgnorePointer(
+      child: Stack(
+        children: [
+          SizedBox(
+            width: double.infinity,
+            height: double.infinity,
             child: CustomPaint(
-              painter: RaindropPainter(
-                visible: _animation.dropVisible.value,
+              painter: HolePainter(
+                color: widget.color,
+                radius: _animation.holeSize.value * size.width,
+                circleDifference: widget.circleDifference,
+                numberOfCircles: widget.numberOfCircles,
               ),
             ),
           ),
-        ),
-      ],
+          Positioned(
+            top: _animation.dropPosition.value * size.height,
+            left: size.width / 2 - _animation.dropSize.value / 2,
+            child: SizedBox(
+              width: _animation.dropSize.value,
+              height: _animation.dropSize.value,
+              child: CustomPaint(
+                painter: RaindropPainter(
+                  visible: _animation.dropVisible.value,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
