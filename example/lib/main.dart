@@ -34,27 +34,25 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: CircularAnimationSplash(
-        color: Theme.of(context).accentColor,
-        logo: Text(
-          'logickoder',
-          style: Theme.of(context).textTheme.headline3?.copyWith(
-                color: Colors.yellow[900],
-              ),
-        ),
-        screen: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: ListView.separated(
-            itemBuilder: (_, index) => Text('$index'),
-            separatorBuilder: (_, __) => const Divider(),
-            itemCount: 100,
-          ),
-        ),
-        duration: const Duration(seconds: 6),
-        numberOfCircles: 3,
-        circleDifference: 100,
+    return CircularAnimationSplash(
+      color: Theme.of(context).accentColor,
+      logo: Text(
+        'logickoder',
+        style: Theme.of(context).textTheme.headline3?.copyWith(
+              color: Colors.yellow[900],
+            ),
       ),
+      screen: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: ListView.separated(
+          itemBuilder: (_, index) => Text('$index'),
+          separatorBuilder: (_, __) => const Divider(),
+          itemCount: 100,
+        ),
+      ),
+      duration: const Duration(seconds: 6),
+      numberOfCircles: 3,
+      circleDifference: 100,
     );
   }
 }

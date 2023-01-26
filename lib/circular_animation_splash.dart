@@ -1,6 +1,6 @@
 library circular_animation_splash;
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 import '../staggered_circular_splash_animation.dart';
 import '../hole_painter.dart';
@@ -61,40 +61,40 @@ class _CircularAnimationSplashState extends State<CircularAnimationSplash>
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final screen = Column(
+      children: [
+        if (widget.logo != null) widget.logo!,
+        if (widget.screen != null && _animation.screenVisible.value)
+          Expanded(child: widget.screen!)
+      ],
+    );
 
-    return IgnorePointer(
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          if (widget.logo != null)
-            Positioned(
-              top: size.height * _animation.logoPosition.value,
-              child: Column(
+    return Scaffold(
+      body: _animation.logoPosition.value == 0
+          ? screen
+          : IgnorePointer(
+              child: Stack(
+                alignment: Alignment.center,
                 children: [
-                  widget.logo!,
-                  if (widget.screen != null && _animation.screenVisible.value)
-                    SizedBox(
-                      height: size.height,
-                      width: size.width,
-                      child: widget.screen!,
+                  Positioned(
+                    top: size.height * _animation.logoPosition.value,
+                    child: screen,
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    height: double.infinity,
+                    child: CustomPaint(
+                      painter: HolePainter(
+                        color: widget.color,
+                        radius: _animation.holeSize.value * size.width,
+                        circleDifference: widget.circleDifference,
+                        numberOfCircles: widget.numberOfCircles,
+                      ),
                     ),
+                  ),
                 ],
               ),
             ),
-          SizedBox(
-            width: double.infinity,
-            height: double.infinity,
-            child: CustomPaint(
-              painter: HolePainter(
-                color: widget.color,
-                radius: _animation.holeSize.value * size.width,
-                circleDifference: widget.circleDifference,
-                numberOfCircles: widget.numberOfCircles,
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 
